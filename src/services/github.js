@@ -15,14 +15,11 @@ async function fetchIssues(username, updatedFrom) {
   let q = `repo:${REPO} is:issue archived:false assignee:${username} sort:updated-desc`;
   if (updatedFrom) q += ` updated:>=${updatedFrom}`;
 
-  console.log('GitHub: fetchIssues', { username, updatedFrom });
   const res = await githubClient.get('/search/issues', { params: { q } });
-  console.log(`GitHub: fetchIssues OK — ${res.data.items.length} issues`);
   return res.data.items;
 }
 
 async function fetchTimeline(issueNumber) {
-  console.log(`GitHub: fetchTimeline #${issueNumber}`);
   const res = await githubClient.get(
     `/repos/${REPO}/issues/${issueNumber}/timeline`,
     { headers: { Accept: 'application/vnd.github.mockingbird-preview+json' } }
@@ -35,7 +32,6 @@ async function fetchTimeline(issueNumber) {
       pr_url: event.source.issue.html_url,
     }));
 
-  console.log(`GitHub: fetchTimeline #${issueNumber} OK — ${prs.length} PRs`);
   return { issue_number: issueNumber, related_prs: prs };
 }
 
