@@ -12,8 +12,8 @@ const githubClient = axios.create({
 });
 
 async function fetchIssues(username, updatedFrom) {
-  let q = `repo:${REPO}+is:issue+archived:false+assignee:${username}+sort:updated-desc`;
-  if (updatedFrom) q += `+updated:>=${updatedFrom}`;
+  let q = `repo:${REPO} is:issue archived:false assignee:${username} sort:updated-desc`;
+  if (updatedFrom) q += ` updated:>=${updatedFrom}`;
 
   const res = await githubClient.get('/search/issues', { params: { q } });
   return res.data.items;
